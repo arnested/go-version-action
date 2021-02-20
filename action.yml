@@ -1,0 +1,19 @@
+name: go-version-action
+description: Provide go versions for use in your workflow
+inputs:
+  working-directory:
+    description: Working direcory
+    required: false
+    default: .
+outputs:
+  latest:
+    description: The latest go version
+  minimal:
+    description: The minial go version (as specified by go.mod)
+  matrix:
+    description: An array of go versions from the minimum supported version to the latest released version
+  module:
+    description: The go module (as specified by go.mod)
+runs:
+  using: node12
+  main: dist/index.js
