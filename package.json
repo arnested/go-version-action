@@ -20,7 +20,7 @@
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.2.6",
-    "@octokit/rest": "^18.2.0",
+    "@octokit/rest": "^18.2.1",
     "@types/semver": "^7.3.4",
     "semver": "^7.3.4"
   },
