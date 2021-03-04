@@ -20,5 +20,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./
+        id: go-version
         with:
           working-directory: ./__tests__/testdata
+      - run: |
+          test '${{ steps.go-version.outputs.module }}' == 'example.com/go/testmodule'
+      - run: |
+          test '${{ steps.go-version.outputs.minimal }}' == '1.13'
+      - run: |
+          test '${{ steps.go-version.outputs.latest }}' == '1.16'
+      - run: |
+          test '${{ steps.go-version.outputs.matrix }}' == '["1.16","1.15","1.14","1.13"]'
