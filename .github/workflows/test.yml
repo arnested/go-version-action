@@ -47,4 +47,4 @@ jobs:
           git commit -m "Publish dist" || echo "Nothing to commit"
           git push origin main
           git tag --force v1
-          git push origin v1 --force-with-lease
+          git push origin v1 --force
