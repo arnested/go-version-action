@@ -24,8 +24,8 @@ async function run(): Promise<void> {
     core.setOutput('latest', lat)
     core.info(`go module name: ${name} (from go.mod)`)
     core.info(`minimal go version: ${min} (from go.mod)`)
-    core.info(`latest go version: ${lat}`)
-    core.info(`go version matrix: ${mat}`)
+    core.info(`latest go version: ${lat} (from github.com/golang/go)`)
+    core.info(`go version matrix: ${mat} (from github.com/golang/go)`)
   } catch (error) {
     core.setFailed(error.message)
   }
