@@ -39,6 +39,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: |
           npm install
+          npm run build
           npm run package
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
