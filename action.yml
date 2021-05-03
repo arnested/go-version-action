@@ -1,5 +1,8 @@
 name: Go version action
-description: A GitHub action for using the latest released Go version and the minimal support Go version (from go.mod) and a build matrix of them and all versions in between.
+description: A GitHub Action providing the latest Go version, your projects minimum version, and a build matrix to your workflow
+branding:
+  icon: box
+  color: blue
 inputs:
   working-directory:
     description: Working direcory
