@@ -49,8 +49,6 @@ jobs:
           git add dist/index.js
           git commit -m "Publish dist" || echo "Nothing to commit"
           git push origin main
-          git tag --force v1
-          git push origin v1 --force
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.35.0
         id: version
@@ -68,3 +66,15 @@ jobs:
           release_name: Release ${{ steps.version.outputs.new_tag }}
           draft: false
           prerelease: false
+      - name: Major version tag
+        id: tag-version
+        if: ${{ steps.version.outputs.new_tag }} != ""
+        uses: actions/github-script@0.9.0
+        with:
+          script: |
+            core.setOutput('tag', steps.version.outputs.new_tag.split('.')[1])
+      - name: Tag ${{ steps.major-version.outputs.tag }}
+        if: ${{ steps.version.outputs.new_tag }} != ""
+        run: |
+          git tag --force ${{ steps.major-version.outputs.tag }}
+          git push origin ${{ steps.major-version.outputs.tag }} --force
