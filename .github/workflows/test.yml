@@ -37,7 +37,10 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v2
-      - run: |
+        with:
+          fetch-depth: 0
+      - name: Rebuild dist
+        run: |
           npm install
           npm run build
           npm run package
@@ -48,3 +51,20 @@ jobs:
           git push origin main
           git tag --force v1
           git push origin v1 --force
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.35.0
+        id: version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DEFAULT_BUMP: patch
+      - name: Create release
+        if: ${{ steps.version.outputs.new_tag }} != ""
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.version.outputs.new_tag }}
+          release_name: Release ${{ steps.version.outputs.new_tag }}
+          draft: false
+          prerelease: false
