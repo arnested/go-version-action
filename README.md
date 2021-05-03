@@ -8,13 +8,15 @@ and all versions in between.
 
 Being consistent is hard.
 
-I used the hard code the Go versions my projects needed to test and
-builds against in my GitHub Actions workflow files.
+I used to hard code the Go versions my projects needed for test and
+builds in my GitHub Actions workflow files.
 
 Of course the result was that I used different versions in the
-`go.mod` file and my workflow files. And whenever a new version of Go
-was released I forgot to add the new version to my build matrix and my
-projects weren't tested on the new release(s).
+`go.mod` file and my workflow files.
+
+Whenever a new version of Go (aka Golang) was released I forgot to add
+the new version to my build matrix and my projects weren't tested on
+the new release(s).
 
 So I build this action.
 
@@ -22,8 +24,8 @@ The action reads the minimal supported Go version from your `go.mod`
 file and exposes it as a variable to you workflow.
 
 It also pulls the list of release tags from
-https://github.com/golang/go and exposes the latest released Go
-version as a variable as well.
+[github.com/golang/go](https://github.com/golang/go) and exposes the
+latest released Go version as a variable as well.
 
 From the list of released go versions and the minimal version your
 module supports we also build a "matrix" variable to be used as a
