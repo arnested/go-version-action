@@ -39,7 +39,7 @@ specify the working directory where it is located:
 
 ```yaml
 working-directory:
- description: Working direcory where you go.mod file is located
+  description: Working direcory where you go.mod file is located
   required: false
   default: .
 ```
