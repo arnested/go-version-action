@@ -1,5 +1,5 @@
-name: go-version-action
-description: Provide go versions for use in your workflow
+name: Go version action
+description: A GitHub action for using the latest released Go version and the minimal support Go version (from go.mod) and a build matrix of them and all versions in between.
 inputs:
   working-directory:
     description: Working direcory
@@ -11,7 +11,7 @@ outputs:
   minimal:
     description: The minial go version (as specified by go.mod)
   matrix:
-    description: An array of go versions from the minimum supported version to the latest released version
+    description: An (stringified) array of go versions from the minimal supported version to the latest released version
   module:
     description: The go module (as specified by go.mod)
 runs:
