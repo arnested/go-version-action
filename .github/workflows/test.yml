@@ -72,7 +72,7 @@ jobs:
         uses: actions/github-script@0.9.0
         with:
           script: |
-            core.setOutput('tag', '${{ steps.version.outputs.new_tag }}'.split('.')[1])
+            core.setOutput('tag', '${{ steps.version.outputs.new_tag }}'.split('.')[0])
       - name: Tag ${{ steps.major-version.outputs.tag }}
         if: ${{ steps.version.outputs.new_tag }} != ""
         run: |
