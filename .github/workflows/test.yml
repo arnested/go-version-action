@@ -44,8 +44,6 @@ jobs:
           npm install
           npm run build
           npm run package
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
           git add dist/index.js
           git commit -m "Publish dist" || echo "Nothing to commit"
           git push origin main
