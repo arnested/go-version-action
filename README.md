@@ -1,8 +1,8 @@
 # Go version action
 
-A GitHub action for using the latest released Go version and the
-minimal support Go version (from go.mod) and a build matrix of them
-and all versions in between.
+A GitHub action for using the latest released Go version and your
+projects minimal support Go version (from go.mod), and a build matrix
+of them and all versions in between.
 
 ## Motive
 
@@ -14,9 +14,9 @@ builds in my GitHub Actions workflow files.
 Of course the result was that I used different versions in the
 `go.mod` file and my workflow files.
 
-Whenever a new version of Go (aka Golang) was released I forgot to add
-the new version to my build matrix and my projects weren't tested on
-the new release(s).
+Whenever a new version of Go was released I forgot to add the new
+version to my build matrix and my projects weren't tested on the new
+release(s).
 
 So I build this action.
 
@@ -31,7 +31,7 @@ From the list of released go versions and the minimal version your
 module supports we also build a "matrix" variable to be used as a
 build matrix.
 
-While we are at it we also extract the modules path from the `go.mod`
+While we are at it we also extract the module path from the `go.mod`
 file even though it hasn't really anything to do with versions ;)
 
 ## Inputs
@@ -84,7 +84,7 @@ jobs:
 
 ![Log of running action](docs/action-run.png)
 
-If you want do matrix test of all Go versions from your minimally
+If you want do a matrix test of all Go versions from your minimally
 supported version up to the latest released version we need to do a
 bit more.
 

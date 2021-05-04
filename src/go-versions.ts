@@ -28,7 +28,7 @@ const modulename = (content: string): string => {
   const matches = r.exec(content)
 
   if (matches === null) {
-    throw new Error('No module name in go.mod')
+    throw new Error('No module path in go.mod')
   }
 
   return matches[1]

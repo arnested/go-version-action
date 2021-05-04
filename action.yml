@@ -1,5 +1,5 @@
 name: Go version action
-description: A GitHub Action providing the latest Go version, your projects minimum version, and a build matrix to your workflow
+description: A GitHub Action providing the latest Go version, your projects minimum Go version, and a build matrix to your workflow
 branding:
   icon: box
   color: blue
@@ -16,7 +16,7 @@ outputs:
   matrix:
     description: An (stringified) array of go versions from the minimal supported version to the latest released version
   module:
-    description: The go module (as specified by go.mod)
+    description: The go module path (as specified by go.mod)
 runs:
   using: node12
   main: dist/index.js

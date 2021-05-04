@@ -22,7 +22,7 @@ async function run(): Promise<void> {
     core.setOutput('minimal', min)
     core.setOutput('matrix', mat)
     core.setOutput('latest', lat)
-    core.info(`go module name: ${name} (from go.mod)`)
+    core.info(`go module path: ${name} (from go.mod)`)
     core.info(`minimal go version: ${min} (from go.mod)`)
     core.info(`latest go version: ${lat} (from github.com/golang/go)`)
     core.info(`go version matrix: ${mat} (from github.com/golang/go)`)
