@@ -69,7 +69,7 @@ jobs:
       - name: Major version tag
         id: major-version
         if: ${{ steps.version.outputs.new_tag }} != ""
-        uses: actions/github-script@0.9.0
+        uses: actions/github-script@v4.0.2
         with:
           script: |
             core.setOutput('tag', '${{ steps.version.outputs.new_tag }}'.split('.')[0])
