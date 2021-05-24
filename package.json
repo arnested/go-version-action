@@ -19,7 +19,7 @@
   "author": "Arne Jørgensen",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.2.7",
+    "@actions/core": "^1.3.0",
     "@octokit/rest": "^18.5.3",
     "@types/semver": "^7.3.6",
     "semver": "^7.3.5"
