@@ -1,0 +1,59 @@
+name: Release
+on:
+  workflow_run:
+    workflows: ["Build and test"]
+    branches: [main]
+    types:
+      - completed
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Rebuild dist
+        id: dist
+        run: |
+          npm install
+          npm run build
+          npm run package
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add dist/index.js
+          (git commit -m "Publish dist" && echo "::set-output name=changed::true") || echo "::set-output name=changed::false"
+      - name: Push rebuild dist
+        if: steps.dist.output.changed == "true"
+        run: |
+          git push origin main
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.35.0
+        if: steps.dist.output.changed == "true"
+        id: version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DEFAULT_BUMP: patch
+      - name: Create release
+        if: (steps.dist.output.changed == "true") && (steps.version.outputs.new_tag != "")
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.version.outputs.new_tag }}
+          release_name: Release ${{ steps.version.outputs.new_tag }}
+          draft: false
+          prerelease: false
+      - name: Major version tag
+        id: major-version
+        if: (steps.dist.output.changed == "true") && (steps.version.outputs.new_tag != "")
+        uses: actions/github-script@v4
+        with:
+          script: |
+            core.setOutput('tag', '${{ steps.version.outputs.new_tag }}'.split('.')[0])
+      - name: Tag ${{ steps.major-version.outputs.tag }}
+        if: (steps.dist.output.changed == "true") && (steps.version.outputs.new_tag != "")
+        run: |
+          git tag --force ${{ steps.major-version.outputs.tag }}
+          git push origin ${{ steps.major-version.outputs.tag }} --force
