@@ -46,6 +46,14 @@ working-directory:
   default: .
 ```
 
+To avoid API rate limits when fetching go releases from GitHub it is
+recommended to set a token:
+
+```yaml
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
 ## Outputs
 
 ```yaml
@@ -76,6 +84,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: arnested/go-version-action@v1
         id: go-version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Install Go ${{ steps.go-version.outputs.minimal }}
         uses: actions/setup-go@v2
         with:
@@ -105,6 +115,8 @@ jobs:
     - uses: actions/checkout@v2
     - uses: arnested/go-version-action@v1
       id: versions
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   test:
     name: Test
     runs-on: ubuntu-latest
