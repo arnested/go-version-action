@@ -13,6 +13,9 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: Build ChangeLog
+        id: changelog
+        run: echo "::set-output name=changes::$(npx conventional-changelog-cli)"
       - name: Rebuild dist
         id: dist
         run: |
@@ -66,4 +69,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.version.outputs.new_tag }}
           name: Release ${{ steps.version.outputs.new_tag }}
-          omitBody: true
+          omit: ${{ steps.changelog.outputs.changes }}
