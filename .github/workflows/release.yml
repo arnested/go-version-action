@@ -69,4 +69,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.version.outputs.new_tag }}
           name: Release ${{ steps.version.outputs.new_tag }}
-          omit: ${{ steps.changelog.outputs.changes }}
+          body: ${{ steps.changelog.outputs.changes }}
