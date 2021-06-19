@@ -35,16 +35,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           DEFAULT_BUMP: patch
-      - name: Create release
-        if: ${{ (steps.dist.outputs.changed == 'true') && (steps.version.outputs.new_tag != '') }}
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.version.outputs.new_tag }}
-          release_name: Release ${{ steps.version.outputs.new_tag }}
-          draft: false
-          prerelease: false
       - name: Major version tag
         id: major-version
         if: ${{ (steps.dist.outputs.changed == 'true') && (steps.version.outputs.new_tag != '') }}
@@ -57,3 +47,23 @@ jobs:
         run: |
           git tag --force ${{ steps.major-version.outputs.tag }}
           git push origin ${{ steps.major-version.outputs.tag }} --force
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date --iso-8601=seconds)"
+      - name: Create/update major version release
+        if: ${{ (steps.dist.outputs.changed == 'true') && (steps.version.outputs.new_tag != '') }}
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          allowUpdates: true
+          tag: ${{ steps.major-version.outputs.tag }}
+          name: ${{ steps.version.outputs.new_tag }} (${{ steps.date.outputs.date }})
+          omitBody: true
+      - name: Create release
+        if: ${{ (steps.dist.outputs.changed == 'true') && (steps.version.outputs.new_tag != '') }}
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.version.outputs.new_tag }}
+          name: Release ${{ steps.version.outputs.new_tag }}
+          omitBody: true
