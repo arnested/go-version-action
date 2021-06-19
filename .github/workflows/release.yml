@@ -13,8 +13,6 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Build ChangeLog
-        run: npx conventional-changelog-cli --outfile="${{ runner.temp }}/ChangeLog.md"
       - name: Rebuild dist
         id: dist
         run: |
@@ -53,6 +51,7 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date --iso-8601=seconds)"
       - name: Build full ChangeLog
+        if: ${{ (steps.dist.outputs.changed == 'true') && (steps.version.outputs.new_tag != '') }}
         run: npx conventional-changelog-cli --release-count=0 --preset=eslint --outfile="${{ runner.temp }}/FullChangeLog.md"
       - name: Create/update major version release
         if: ${{ (steps.dist.outputs.changed == 'true') && (steps.version.outputs.new_tag != '') }}
@@ -63,6 +62,9 @@ jobs:
           tag: ${{ steps.major-version.outputs.tag }}
           name: ${{ steps.version.outputs.new_tag }} (${{ steps.date.outputs.date }})
           bodyFile: ${{ runner.temp }}/FullChangeLog.md
+      - name: Build ChangeLog
+        if: ${{ (steps.dist.outputs.changed == 'true') && (steps.version.outputs.new_tag != '') }}
+        run: npx conventional-changelog-cli --release-count=2 --outfile="${{ runner.temp }}/ChangeLog.md"
       - name: Create release
         if: ${{ (steps.dist.outputs.changed == 'true') && (steps.version.outputs.new_tag != '') }}
         uses: ncipollo/release-action@v1
