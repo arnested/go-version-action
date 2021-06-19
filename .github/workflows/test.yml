@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - 'releases/*'
 
 jobs:
   build:
@@ -19,6 +18,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - run: |
+          npm install
+      - run: |
+          npm run build
+      - run: |
+          npm run package
       - uses: ./
         id: go-version
         with:

@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Ask a question or get support
+    url: https://github.com/arnested/go-version-action/discussions
+    about: Please use the discussions forum
+  - name: Do you need inspiration for your GitHub Action workflows?
+    url: https://github.com/search?q=%22arnested%2Fgo-version-action%22+path%3A.github%2Fworkflows%2F&type=code
+    about: Search all of GitHub for uses of the action in repositories
