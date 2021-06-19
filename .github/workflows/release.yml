@@ -14,8 +14,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Build ChangeLog
-        id: changelog
-        run: echo "::set-output name=changes::$(npx conventional-changelog-cli)"
+        run: npx conventional-changelog-cli > "${{ runner.temp }}/ChangeLog.md"
       - name: Rebuild dist
         id: dist
         run: |
@@ -69,4 +68,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.version.outputs.new_tag }}
           name: Release ${{ steps.version.outputs.new_tag }}
-          body: ${{ steps.changelog.outputs.changes }}
+          bodyFile: ${{ runner.temp }}/ChangeLog.md
