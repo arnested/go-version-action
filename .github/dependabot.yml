@@ -1,16 +1,16 @@
 version: 2
 updates:
-  - package-ecosystem: 'npm'
-    directory: '/'
+  - package-ecosystem: npm
+    directory: /d'
     schedule:
-      interval: 'daily'
+      interval: monthly
       timezone: Europe/Copenhagen
     reviewers:
-      - "arnested"
+      - arnested
   - package-ecosystem: github-actions
-    directory: "/"
+    directory: /
     schedule:
-      interval: daily
+      interval: monthly
       timezone: Europe/Copenhagen
     reviewers:
-      - "arnested"
+      - arnested
