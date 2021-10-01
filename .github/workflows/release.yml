@@ -38,7 +38,7 @@ jobs:
       - name: Major version tag
         id: major-version
         if: ${{ (steps.dist.outputs.changed == 'true') && (steps.version.outputs.new_tag != '') }}
-        uses: actions/github-script@v4
+        uses: actions/github-script@v5
         with:
           script: |
             core.setOutput('tag', '${{ steps.version.outputs.new_tag }}'.split('.')[0])
