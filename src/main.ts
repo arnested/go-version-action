@@ -1,11 +1,11 @@
 import * as core from '@actions/core'
 import {
+  getTags,
   gomod,
   latest,
-  minimal,
   matrix,
-  modulename,
-  getTags
+  minimal,
+  modulename
 } from './go-versions'
 
 async function run(): Promise<void> {
@@ -27,7 +27,7 @@ async function run(): Promise<void> {
     core.info(`latest go version: ${lat} (from github.com/golang/go)`)
     core.info(`go version matrix: ${mat} (from github.com/golang/go)`)
   } catch (error) {
-    core.setFailed(error.message)
+    core.setFailed((error as Error).message)
   }
 }
 

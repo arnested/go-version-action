@@ -1,10 +1,11 @@
+import {Endpoints} from '@octokit/types/dist-types/generated/Endpoints.d'
+import {Octokit} from '@octokit/rest'
 import fs from 'fs'
 import semverCoerce from 'semver/functions/coerce'
 import semverGte from 'semver/functions/gte'
-import {Endpoints} from '@octokit/types'
-import {Octokit} from '@octokit/rest'
 
-export type listTags = Endpoints['GET /repos/{owner}/{repo}/tags']['response']['data']
+export type listTags =
+  Endpoints['GET /repos/{owner}/{repo}/tags']['response']['data']
 
 const gomod = (path: string): string => {
   return fs.readFileSync(path, 'utf8')
