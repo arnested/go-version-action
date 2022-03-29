@@ -51,7 +51,7 @@ recommended to set a token:
 
 ```yaml
   env:
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    GITHUB_TOKEN: ${{ github.token }}
 ```
 
 ## Outputs
@@ -85,7 +85,7 @@ jobs:
       - uses: arnested/go-version-action@v1
         id: go-version
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
       - name: Install Go ${{ steps.go-version.outputs.minimal }}
         uses: actions/setup-go@v2
         with:
@@ -116,7 +116,7 @@ jobs:
     - uses: arnested/go-version-action@v1
       id: versions
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ github.token }}
   test:
     name: Test
     runs-on: ubuntu-latest
