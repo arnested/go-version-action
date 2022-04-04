@@ -24,8 +24,8 @@ The action reads the minimal supported Go version from your `go.mod`
 file and exposes it as a variable to you workflow.
 
 It also pulls the list of release tags from
-[github.com/golang/go](https://github.com/golang/go) and exposes the
-latest released Go version as a variable as well.
+[https://go.dev/dl/](https://go.dev/dl/) and exposes the latest
+released Go version as a variable as well.
 
 From the list of released go versions and the minimal version your
 module supports we also build a "matrix" variable to be used as a
@@ -44,14 +44,6 @@ working-directory:
   description: Working direcory where you go.mod file is located
   required: false
   default: .
-```
-
-To avoid API rate limits when fetching go releases from GitHub it is
-recommended to set a token:
-
-```yaml
-  env:
-    GITHUB_TOKEN: ${{ github.token }}
 ```
 
 ## Outputs
@@ -84,8 +76,6 @@ jobs:
       - uses: actions/checkout@v2
       - uses: arnested/go-version-action@v1
         id: go-version
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
       - name: Install Go ${{ steps.go-version.outputs.minimal }}
         uses: actions/setup-go@v2
         with:
@@ -115,8 +105,6 @@ jobs:
     - uses: actions/checkout@v2
     - uses: arnested/go-version-action@v1
       id: versions
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
   test:
     name: Test
     runs-on: ubuntu-latest

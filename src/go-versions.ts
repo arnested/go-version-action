@@ -1,11 +1,11 @@
-import {Endpoints} from '@octokit/types/dist-types/generated/Endpoints.d'
-import {Octokit} from '@octokit/rest'
 import fs from 'fs'
+import fetch from 'node-fetch'
 import semverCoerce from 'semver/functions/coerce'
 import semverGte from 'semver/functions/gte'
 
-export type listTags =
-  Endpoints['GET /repos/{owner}/{repo}/tags']['response']['data']
+interface Version {
+  version: string
+}
 
 const gomod = (path: string): string => {
   return fs.readFileSync(path, 'utf8')
@@ -35,26 +35,31 @@ const modulename = (content: string): string => {
   return matches[1]
 }
 
-const getTags = async (): Promise<listTags> => {
-  const octokit = new Octokit({
-    auth: process.env.GITHUB_TOKEN
-  })
+const getVersions = async (): Promise<Version[]> => {
+  const response = await fetch('https://go.dev/dl/?mode=json&include=all')
 
-  return await octokit.paginate(octokit.repos.listTags, {
-    owner: 'golang',
-    repo: 'go'
-  })
+  if (!response.ok) {
+    throw new Error(
+      `Could not fetch Go versions from https://go.dev/dl/: ${response.status}`
+    )
+  }
+
+  const result = (await response.json()) as Version[]
+
+  return result
 }
 
-const matrix = (min: string, tags: listTags): string[] => {
+const matrix = (min: string, tags: Version[]): string[] => {
   const minClean = semverCoerce(min)
   if (minClean === null) {
     throw new Error(`Minimal version isn't quite right: ${min}`)
   }
 
-  const releaseTags = tags.filter(tag => tag.name.match(/^go[0-9]+\.[0-9]+$/))
+  const releaseTags = tags.filter(tag =>
+    tag.version.match(/^go[0-9]+\.[0-9]+$/)
+  )
 
-  const releaseVersions = releaseTags.map(tag => tag.name.substr(2))
+  const releaseVersions = releaseTags.map(tag => tag.version.substr(2))
 
   const versions = releaseVersions.filter(v => {
     const v2 = semverCoerce(v)
@@ -77,4 +82,4 @@ const latest = (versions: string[]): string => {
   })
 }
 
-export {gomod, latest, matrix, minimal, modulename, getTags}
+export {gomod, latest, matrix, minimal, modulename, getVersions}

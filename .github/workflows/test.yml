@@ -32,8 +32,6 @@ jobs:
         id: go-version
         with:
           working-directory: ./__tests__/testdata
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: |
           test '${{ steps.go-version.outputs.module }}' == 'example.com/go/testmodule'
       - run: |

@@ -1,12 +1,5 @@
-import {
-  gomod,
-  latest,
-  minimal,
-  matrix,
-  modulename,
-  getTags
-} from '../src/go-versions'
 import fs from 'fs'
+import {gomod, latest, matrix, minimal, modulename} from '../src/go-versions'
 
 test('test module name', () => {
   const content = gomod('__tests__/testdata/go.mod')
@@ -19,13 +12,13 @@ test('test minimal version', () => {
 })
 
 test('test latest version', () => {
-  expect(latest(['1.16', '1.15', '1.14', '1.13'])).toEqual('1.16')
+  expect(latest(['1.18', '1.17', '1.16', '1.15', '1.14', '1.13'])).toEqual(
+    '1.18'
+  )
 })
 
 test('test version matrix', () => {
-  const t = JSON.parse(
-    fs.readFileSync('__tests__/testdata/listTags.json', 'utf8')
-  )
+  const t = JSON.parse(fs.readFileSync('__tests__/testdata/dl.json', 'utf8'))
   const m = matrix('1.13', t)
-  expect(m).toEqual(['1.16', '1.15', '1.14', '1.13'])
+  expect(m).toEqual(['1.18', '1.17', '1.16', '1.15', '1.14', '1.13'])
 })
