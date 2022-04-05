@@ -18,5 +18,5 @@ outputs:
   module:
     description: The go module path (as specified by go.mod)
 runs:
-  using: node12
+  using: node16
   main: dist/index.js
