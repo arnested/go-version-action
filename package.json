@@ -20,7 +20,7 @@
   "author": "Arne Jørgensen",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.6.0",
+    "@actions/core": "^1.7.0",
     "@types/node-fetch": "^2.6.1",
     "@types/semver": "^7.3.9",
     "node-fetch": "^2.6.7",
