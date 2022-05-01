@@ -24,7 +24,7 @@
     "@types/node-fetch": "^2.6.1",
     "@types/semver": "^7.3.9",
     "node-fetch": "^2.6.7",
-    "semver": "^7.3.5"
+    "semver": "^7.3.7"
   },
   "devDependencies": {
     "@types/jest": "^27.4.1",
