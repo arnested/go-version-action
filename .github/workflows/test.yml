@@ -39,4 +39,4 @@ jobs:
       - run: |
           test '${{ steps.go-version.outputs.latest }}' == '1.18'
       - run: |
-          test '${{ steps.go-version.outputs.matrix }}' == '["1.18","1.17","1.16","1.15","1.14","1.13"]'
+          test '${{ steps.go-version.outputs.matrix }}' == '["1.13","1.14","1.15","1.16","1.17","1.18"]'

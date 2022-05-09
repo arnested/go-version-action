@@ -12,7 +12,7 @@ test('test minimal version', () => {
 })
 
 test('test latest version', () => {
-  expect(latest(['1.18', '1.17', '1.16', '1.15', '1.14', '1.13'])).toEqual(
+  expect(latest(['1.13', '1.14', '1.15', '1.16', '1.17', '1.18'])).toEqual(
     '1.18'
   )
 })
@@ -20,5 +20,5 @@ test('test latest version', () => {
 test('test version matrix', () => {
   const t = JSON.parse(fs.readFileSync('__tests__/testdata/dl.json', 'utf8'))
   const m = matrix('1.13', t)
-  expect(m).toEqual(['1.18', '1.17', '1.16', '1.15', '1.14', '1.13'])
+  expect(m).toEqual(['1.13', '1.14', '1.15', '1.16', '1.17', '1.18'])
 })
