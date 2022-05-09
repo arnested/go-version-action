@@ -66,7 +66,7 @@ const matrix = (min: string, tags: Version[]): string[] => {
     return v2 !== null && semverGte(v2, minClean)
   })
 
-  return versions
+  return versions.reverse()
 }
 
 const latest = (versions: string[]): string => {
