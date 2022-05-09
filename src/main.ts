@@ -32,6 +32,23 @@ async function run(): Promise<void> {
     core.info(`minimal go version: ${min} - from go.mod`)
     core.info(`latest go version: ${lat} - from https://go.dev/dl/`)
     core.info(`go version matrix: ${mat} - from https://go.dev/dl/`)
+
+    const htmlMat = mat
+      .map(v => `<a href="https://go.dev/doc/go${v}">Go ${v}</a>`)
+      .join('<br>')
+
+    await core.summary
+      .addTable([
+        [
+          {data: 'Output', header: true},
+          {data: 'Value', header: true}
+        ],
+        ['Module', `<a href="https://pkg.go.dev/${name}">${name}</a>`],
+        ['Minimal', `<a href="https://go.dev/doc/go${min}">Go ${min}</a>`],
+        ['Latest', `<a href="https://go.dev/doc/go${lat}">Go ${lat}</a>`],
+        ['Matrix', `${htmlMat}`]
+      ])
+      .write()
   } catch (error) {
     core.setFailed((error as Error).message)
   }

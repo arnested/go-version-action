@@ -123,3 +123,11 @@ jobs:
 ```
 
 ![The workflow summary](docs/action-matrix-summary.png)
+
+## Summary
+
+The action writes a [GitHub Actions Job
+Summary](https://github.blog/2022-05-09-supercharging-github-actions-with-job-summaries/)
+with values it identified:
+
+![Job summary](docs/job-summary.png)
