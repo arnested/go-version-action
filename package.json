@@ -23,7 +23,7 @@
     "@actions/core": "^1.8.0",
     "@types/node-fetch": "^2.6.1",
     "@types/semver": "^7.3.9",
-    "node-fetch": "^2.6.7",
+    "node-fetch": "^3.2.4",
     "semver": "^7.3.7"
   },
   "devDependencies": {
