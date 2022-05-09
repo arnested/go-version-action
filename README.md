@@ -73,13 +73,14 @@ jobs:
   my-go-workflow:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: arnested/go-version-action@v1
         id: go-version
       - name: Install Go ${{ steps.go-version.outputs.minimal }}
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v3
         with:
           go-version: ${{ steps.go-version.outputs.minimal }}
+          check-latest: true
 ```
 
 ![Log of running action](docs/action-run.png)
@@ -102,7 +103,7 @@ jobs:
     outputs:
       matrix: ${{ steps.versions.outputs.matrix }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - uses: arnested/go-version-action@v1
       id: versions
   test:
@@ -113,11 +114,12 @@ jobs:
       matrix:
         version: ${{ fromJSON(needs.go-versions.outputs.matrix) }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Install Go
-      uses: actions/setup-go@v2
+      uses: actions/setup-go@v3
       with:
         go-version: ${{ matrix.version }}
+        check-latest: true
     - name: go test
       run: go test -v -race -cover -covermode=atomic -coverprofile=coverage.txt ./...
 ```
