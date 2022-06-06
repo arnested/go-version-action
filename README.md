@@ -44,19 +44,33 @@ working-directory:
   description: Working direcory where you go.mod file is located
   required: false
   default: .
+unsupported:
+  description: Include unsupported versions of Go
+  required: false
+  default: "true"
+unstable:
+  description: Include unstable versions of Go (beta, release candidates)
+  required: false
+  default: "false"
+patch-level:
+  description: Include the patch levels on the versions (default is major.minor)
+  required: false
+  default: "false"
 ```
 
 ## Outputs
 
 ```yaml
+module:
+  description: The go module path (as specified by go.mod)
+go-mod-version:
+  description: The go version specified by go.mod
+minimal:
+  description: The minial go version
+matrix:
+  description: An (stringified) array of go versions from the minimal supported version to the latest released version
 latest:
   description: The latest go version
-minimal:
-  description: The minial go version (as specified by go.mod)
-matrix:
-  description: An (stringified) array of go versions from the minimum supported version to the latest released version
-module:
-  description: The go module name (as specified by go.mod)
 ```
 
 ## Examples

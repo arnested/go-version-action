@@ -1,24 +1,126 @@
 import fs from 'fs'
-import {gomod, latest, matrix, minimal, modulename} from '../src/go-versions'
+import {
+  getGoModVersion,
+  getVersions,
+  gomod,
+  latest,
+  matrix,
+  minimal,
+  modulename
+} from '../src/go-versions'
 
 test('test module name', () => {
   const content = gomod('__tests__/testdata/go.mod')
   expect(modulename(content)).toEqual('example.com/go/testmodule')
 })
 
-test('test minimal version', () => {
+test('test go mod version', () => {
   const content = gomod('__tests__/testdata/go.mod')
-  expect(minimal(content)).toEqual('1.13')
+  expect(getGoModVersion(content)).toEqual('1.16')
+})
+
+test('test minimal version', () => {
+  expect(minimal(['1.16', '1.17', '1.18'])).toEqual('1.16')
 })
 
 test('test latest version', () => {
-  expect(latest(['1.13', '1.14', '1.15', '1.16', '1.17', '1.18'])).toEqual(
-    '1.18'
-  )
+  expect(latest(['1.16', '1.17', '1.18'])).toEqual('1.18')
 })
 
 test('test version matrix', () => {
   const t = JSON.parse(fs.readFileSync('__tests__/testdata/dl.json', 'utf8'))
-  const m = matrix('1.13', t)
-  expect(m).toEqual(['1.13', '1.14', '1.15', '1.16', '1.17', '1.18'])
+  const m = matrix('1.16', false, false, t)
+  expect(m).toEqual(['1.16', '1.17', '1.18'])
+})
+
+test('test unstable version matrix', () => {
+  const t = JSON.parse(fs.readFileSync('__tests__/testdata/dl.json', 'utf8'))
+  const m = matrix('1.16', true, false, t)
+  expect(m).toEqual([
+    '1.16beta1',
+    '1.16rc1',
+    '1.16',
+    '1.17beta1',
+    '1.17rc1',
+    '1.17rc2',
+    '1.17',
+    '1.18beta1',
+    '1.18beta2',
+    '1.18rc1',
+    '1.18'
+  ])
+})
+
+test('test patch level version matrix', () => {
+  const t = JSON.parse(fs.readFileSync('__tests__/testdata/dl.json', 'utf8'))
+  const m = matrix('1.16', false, true, t)
+  expect(m).toEqual([
+    '1.16',
+    '1.16.1',
+    '1.16.2',
+    '1.16.3',
+    '1.16.4',
+    '1.16.5',
+    '1.16.6',
+    '1.16.7',
+    '1.16.8',
+    '1.16.9',
+    '1.16.10',
+    '1.16.11',
+    '1.16.12',
+    '1.16.13',
+    '1.16.14',
+    '1.16.15',
+    '1.17',
+    '1.17.1',
+    '1.17.2',
+    '1.17.3',
+    '1.17.4',
+    '1.17.5',
+    '1.17.6',
+    '1.17.7',
+    '1.17.8',
+    '1.18'
+  ])
+})
+
+test('test patch level, unstable version matrix', () => {
+  const t = JSON.parse(fs.readFileSync('__tests__/testdata/dl.json', 'utf8'))
+  const m = matrix('1.16', true, true, t)
+  expect(m).toEqual([
+    '1.16beta1',
+    '1.16rc1',
+    '1.16',
+    '1.16.1',
+    '1.16.2',
+    '1.16.3',
+    '1.16.4',
+    '1.16.5',
+    '1.16.6',
+    '1.16.7',
+    '1.16.8',
+    '1.16.9',
+    '1.16.10',
+    '1.16.11',
+    '1.16.12',
+    '1.16.13',
+    '1.16.14',
+    '1.16.15',
+    '1.17beta1',
+    '1.17rc1',
+    '1.17rc2',
+    '1.17',
+    '1.17.1',
+    '1.17.2',
+    '1.17.3',
+    '1.17.4',
+    '1.17.5',
+    '1.17.6',
+    '1.17.7',
+    '1.17.8',
+    '1.18beta1',
+    '1.18beta2',
+    '1.18rc1',
+    '1.18'
+  ])
 })
