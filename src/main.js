@@ -7,9 +7,9 @@ import {
   minimal,
   modulename,
   getGoModVersion
-} from './go-versions'
+} from './go-versions.js'
 
-async function run(): Promise<void> {
+async function run() {
   try {
     if (process.env.GITHUB_TOKEN !== undefined) {
       core.warning(
@@ -61,7 +61,7 @@ async function run(): Promise<void> {
       ])
       .write()
   } catch (error) {
-    core.setFailed((error as Error).message)
+    core.setFailed(error.message)
   }
 }
 

@@ -47,15 +47,15 @@ working-directory:
 unsupported:
   description: Include unsupported versions of Go
   required: false
-  default: "true"
+  default: 'true'
 unstable:
   description: Include unstable versions of Go (beta, release candidates)
   required: false
-  default: "false"
+  default: 'false'
 patch-level:
   description: Include the patch levels on the versions (default is major.minor)
   required: false
-  default: "false"
+  default: 'false'
 ```
 
 ## Outputs
@@ -117,9 +117,9 @@ jobs:
     outputs:
       matrix: ${{ steps.versions.outputs.matrix }}
     steps:
-    - uses: actions/checkout@v3
-    - uses: arnested/go-version-action@v1
-      id: versions
+      - uses: actions/checkout@v3
+      - uses: arnested/go-version-action@v1
+        id: versions
   test:
     name: Test
     runs-on: ubuntu-latest
@@ -128,14 +128,14 @@ jobs:
       matrix:
         version: ${{ fromJSON(needs.go-versions.outputs.matrix) }}
     steps:
-    - uses: actions/checkout@v3
-    - name: Install Go
-      uses: actions/setup-go@v3
-      with:
-        go-version: ${{ matrix.version }}
-        check-latest: true
-    - name: go test
-      run: go test -v -race -cover -covermode=atomic -coverprofile=coverage.txt ./...
+      - uses: actions/checkout@v3
+      - name: Install Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ matrix.version }}
+          check-latest: true
+      - name: go test
+        run: go test -v -race -cover -covermode=atomic -coverprofile=coverage.txt ./...
 ```
 
 ![The workflow summary](docs/action-matrix-summary.png)
