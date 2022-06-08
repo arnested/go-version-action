@@ -2,8 +2,10 @@ import fs from 'fs'
 import fetch from 'node-fetch'
 import semverCoerce from 'semver/functions/coerce'
 import semverGte from 'semver/functions/gte'
+import semverLte from 'semver/functions/lte'
 
 interface Version {
+  stable: boolean
   version: string
 }
 
@@ -11,8 +13,8 @@ const gomod = (path: string): string => {
   return fs.readFileSync(path, 'utf8')
 }
 
-const minimal = (content: string): string => {
-  const r = /\ngo ([0-9\\.]*)\n/s
+const getGoModVersion = (content: string): string => {
+  const r = /\ngo ([^\n]*)\n/s
 
   const matches = r.exec(content)
 
@@ -35,8 +37,14 @@ const modulename = (content: string): string => {
   return matches[1]
 }
 
-const getVersions = async (): Promise<Version[]> => {
-  const response = await fetch('https://go.dev/dl/?mode=json&include=all')
+const getVersions = async (withUnsupported: boolean): Promise<Version[]> => {
+  let url = 'https://go.dev/dl/?mode=json'
+
+  if (withUnsupported) {
+    url += '&include=all'
+  }
+
+  const response = await fetch(url)
 
   if (!response.ok) {
     throw new Error(
@@ -49,22 +57,42 @@ const getVersions = async (): Promise<Version[]> => {
   return result
 }
 
-const matrix = (min: string, tags: Version[]): string[] => {
+const matrix = (
+  min: string,
+  withUnstable: boolean,
+  withPatchLevel: boolean,
+  tags: Version[]
+): string[] => {
   const minClean = semverCoerce(min)
   if (minClean === null) {
     throw new Error(`Minimal version isn't quite right: ${min}`)
   }
 
-  const releaseTags = tags.filter(tag =>
-    tag.version.match(/^go[0-9]+\.[0-9]+$/)
-  )
+  if (!withUnstable) {
+    tags = tags.filter(tag => tag.stable === true)
+  }
 
-  const releaseVersions = releaseTags.map(tag => tag.version.substr(2))
+  const r = /^go(.*)$/
 
-  const versions = releaseVersions.filter(v => {
+  let versions: string[] = tags.map(tag => {
+    const matches = r.exec(tag.version)
+
+    return matches ? matches[1] : tag.version
+  })
+
+  versions = versions.filter(v => {
     const v2 = semverCoerce(v)
     return v2 !== null && semverGte(v2, minClean)
   })
+
+  if (!withPatchLevel) {
+    versions = versions.map(version => {
+      const parts = version.split('.')
+      return `${parts[0]}.${parts[1]}`
+    })
+  }
+
+  versions = [...new Set(versions)]
 
   return versions.reverse()
 }
@@ -82,4 +110,25 @@ const latest = (versions: string[]): string => {
   })
 }
 
-export {gomod, latest, matrix, minimal, modulename, getVersions}
+const minimal = (versions: string[]): string => {
+  return versions.reduce((acc, val) => {
+    const a = semverCoerce(acc)
+    const v = semverCoerce(val)
+
+    if (v !== null && a !== null && semverLte(v, a)) {
+      return val
+    }
+
+    return acc
+  })
+}
+
+export {
+  gomod,
+  latest,
+  matrix,
+  minimal,
+  modulename,
+  getGoModVersion,
+  getVersions
+}

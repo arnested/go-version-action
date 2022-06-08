@@ -29,14 +29,47 @@ jobs:
       - run: |
           npm run package
       - uses: ./
-        id: go-version
+        id: go-version-1
         with:
           working-directory: ./__tests__/testdata
       - run: |
-          test '${{ steps.go-version.outputs.module }}' == 'example.com/go/testmodule'
+          test '${{ steps.go-version-1.outputs.module }}' == 'example.com/go/testmodule'
       - run: |
-          test '${{ steps.go-version.outputs.minimal }}' == '1.13'
+          test '${{ steps.go-version-1.outputs.go-mod-version }}' == '1.16'
       - run: |
-          test '${{ steps.go-version.outputs.latest }}' == '1.18'
+          test '${{ steps.go-version-1.outputs.minimal }}' == '1.16'
       - run: |
-          test '${{ steps.go-version.outputs.matrix }}' == '["1.13","1.14","1.15","1.16","1.17","1.18"]'
+          test '${{ steps.go-version-1.outputs.latest }}' == '1.18'
+      - run: |
+          test '${{ steps.go-version-1.outputs.matrix }}' == '["1.16","1.17","1.18"]'
+      - uses: ./
+        id: go-version-2
+        with:
+          working-directory: ./__tests__/testdata
+          unsupported: false
+      - run: |
+          test '${{ steps.go-version-2.outputs.module }}' == 'example.com/go/testmodule'
+      - run: |
+          test '${{ steps.go-version-2.outputs.go-mod-version }}' == '1.16'
+      - run: |
+          test '${{ steps.go-version-2.outputs.minimal }}' == '1.17'
+      - run: |
+          test '${{ steps.go-version-2.outputs.latest }}' == '1.18'
+      - run: |
+          test '${{ steps.go-version-2.outputs.matrix }}' == '["1.17","1.18"]'
+      - uses: ./
+        id: go-version-3
+        with:
+          working-directory: ./__tests__/testdata
+          unsupported: false
+          patch-level: true
+      - run: |
+          test '${{ steps.go-version-3.outputs.module }}' == 'example.com/go/testmodule'
+      - run: |
+          test '${{ steps.go-version-3.outputs.go-mod-version }}' == '1.16'
+      - run: |
+          test '${{ steps.go-version-3.outputs.minimal }}' == '1.17.11'
+      - run: |
+          test '${{ steps.go-version-3.outputs.latest }}' == '1.18.3'
+      - run: |
+          test '${{ steps.go-version-3.outputs.matrix }}' == '["1.17.11","1.18.3"]'

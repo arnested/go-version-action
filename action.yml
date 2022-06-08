@@ -8,11 +8,25 @@ inputs:
     description: Working direcory
     required: false
     default: .
+  unstable:
+    description: With unstable versions
+    required: false
+    default: "false"
+  unsupported:
+    description: With no longer supported versions
+    required: false
+    default: "true"
+  patch-level:
+    description: With patch level of the versions
+    required: false
+    default: "false"
 outputs:
+  go-mod-version:
+    description: The minial go version (as specified by go.mod)
   latest:
     description: The latest go version
   minimal:
-    description: The minial go version (as specified by go.mod)
+    description: The minial go version
   matrix:
     description: An (stringified) array of go versions from the minimal supported version to the latest released version
   module:
