@@ -15,7 +15,6 @@ jobs:
           fetch-depth: 0
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.39.0
-        if: ${{ steps.dist.outputs.changed == 'true' }}
         id: version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -23,13 +22,13 @@ jobs:
           DEFAULT_BUMP: patch
       - name: Major version tag
         id: major-version
-        if: ${{ (steps.dist.outputs.changed == 'true') && (steps.version.outputs.new_tag != '') }}
+        if: ${{ (steps.version.outputs.new_tag != '') }}
         uses: actions/github-script@v6
         with:
           script: |
             core.setOutput('tag', '${{ steps.version.outputs.new_tag }}'.split('.')[0])
       - name: Tag ${{ steps.major-version.outputs.tag }}
-        if: ${{ (steps.dist.outputs.changed == 'true') && (steps.version.outputs.new_tag != '') }}
+        if: ${{ (steps.version.outputs.new_tag != '') }}
         run: |
           git tag --force ${{ steps.major-version.outputs.tag }}
           git push origin ${{ steps.major-version.outputs.tag }} --force
@@ -37,10 +36,10 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date --iso-8601)"
       - name: Build full ChangeLog
-        if: ${{ (steps.dist.outputs.changed == 'true') && (steps.version.outputs.new_tag != '') }}
+        if: ${{ (steps.version.outputs.new_tag != '') }}
         run: npx conventional-changelog-cli --release-count=0 --preset=eslint --outfile="${{ runner.temp }}/FullChangeLog.md"
       - name: Create/update major version release
-        if: ${{ (steps.dist.outputs.changed == 'true') && (steps.version.outputs.new_tag != '') }}
+        if: ${{ (steps.version.outputs.new_tag != '') }}
         uses: ncipollo/release-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -49,10 +48,10 @@ jobs:
           name: ${{ steps.version.outputs.new_tag }} (${{ steps.date.outputs.date }})
           bodyFile: ${{ runner.temp }}/FullChangeLog.md
       - name: Build ChangeLog
-        if: ${{ (steps.dist.outputs.changed == 'true') && (steps.version.outputs.new_tag != '') }}
+        if: ${{ (steps.version.outputs.new_tag != '') }}
         run: npx conventional-changelog-cli --release-count=2 --outfile="${{ runner.temp }}/ChangeLog.md"
       - name: Create release
-        if: ${{ (steps.dist.outputs.changed == 'true') && (steps.version.outputs.new_tag != '') }}
+        if: ${{ (steps.version.outputs.new_tag != '') }}
         uses: ncipollo/release-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
