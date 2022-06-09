@@ -1,13 +1,12 @@
 import fs from 'fs'
 import {
   getGoModVersion,
-  getVersions,
   gomod,
   latest,
   matrix,
   minimal,
   modulename
-} from '../src/go-versions'
+} from '../src/go-versions.js'
 
 test('test module name', () => {
   const content = gomod('__tests__/testdata/go.mod')

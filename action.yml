@@ -11,15 +11,15 @@ inputs:
   unstable:
     description: With unstable versions
     required: false
-    default: "false"
+    default: 'false'
   unsupported:
     description: With no longer supported versions
     required: false
-    default: "true"
+    default: 'true'
   patch-level:
     description: With patch level of the versions
     required: false
-    default: "false"
+    default: 'false'
 outputs:
   go-mod-version:
     description: The minial go version (as specified by go.mod)
@@ -33,4 +33,4 @@ outputs:
     description: The go module path (as specified by go.mod)
 runs:
   using: node16
-  main: dist/index.js
+  main: src/main.js
