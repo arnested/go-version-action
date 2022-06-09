@@ -2,14 +2,15 @@
   "name": "go-version-action",
   "private": true,
   "description": "Go Version action",
-  "main": "src/index.js",
+  "main": "src/main.js",
   "scripts": {
     "format": "prettier --write **/*.js",
     "format-check": "prettier --check **/*.js",
-    "lint": "eslint **/*.js",
-    "lint-fix": "eslint --fix **/*.js",
+    "lint": "eslint .",
+    "lint-fix": "eslint --fix .",
     "test": "jest",
-    "all": "npm run format && npm run lint && npm test"
+    "package": "ncc build --minify",
+    "all": "npm run format && npm run lint && npm run package && npm test"
   },
   "type": "module",
   "keywords": [
@@ -25,6 +26,7 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.18.2",
+    "@vercel/ncc": "^0.34.0",
     "babel-jest": "^28.1.1",
     "eslint": "^8.17.0",
     "eslint-plugin-github": "^4.3.6",
