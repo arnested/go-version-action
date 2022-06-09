@@ -144,6 +144,12 @@ jobs:
 
 The action writes a [GitHub Actions Job
 Summary](https://github.blog/2022-05-09-supercharging-github-actions-with-job-summaries/)
-with values it identified:
+with values it identified.
+
+This example is from running with:
+```yaml
+          unsupported: false
+          patch-level: true
+```
 
 ![Job summary](docs/job-summary.png)
