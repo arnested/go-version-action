@@ -65,8 +65,8 @@ jobs:
       - run: |
           test '${{ steps.go-version-3.outputs.go-mod-version }}' == '1.16'
       - run: |
-          test '${{ steps.go-version-3.outputs.minimal }}' == '1.18.5'
+          test '${{ steps.go-version-3.outputs.minimal }}' == '1.18.6'
       - run: |
-          test '${{ steps.go-version-3.outputs.latest }}' == '1.19'
+          test '${{ steps.go-version-3.outputs.latest }}' == '1.19.1'
       - run: |
-          test '${{ steps.go-version-3.outputs.matrix }}' == '["1.18.5","1.19"]'
+          test '${{ steps.go-version-3.outputs.matrix }}' == '["1.18.6","1.19.1"]'
