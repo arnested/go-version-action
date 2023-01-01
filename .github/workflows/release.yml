@@ -27,7 +27,7 @@ jobs:
         run: |
           git push origin main
       - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.52.0
+        uses: anothrNick/github-tag-action@1.55.0
         if: ${{ steps.dist.outputs.changed == 'true' }}
         id: version
         env:
