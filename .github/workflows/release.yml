@@ -21,7 +21,7 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add --force dist/index.js
-          (git commit -m 'Publish dist' && echo '::set-output name=changed::true') || echo '::set-output name=changed::false'
+          (git commit -m 'Publish dist' && (echo 'changed=true' >> $GITHUB_OUTPUT)) || (echo 'changed=false' >> $GITHUB_OUTPUT)
       - name: Push rebuild dist
         if: ${{ steps.dist.outputs.changed == 'true' }}
         run: |
@@ -49,7 +49,7 @@ jobs:
       - name: Get current date
         if: ${{ (steps.dist.outputs.changed == 'true') && (steps.version.outputs.new_tag != '') }}
         id: date
-        run: echo "::set-output name=date::$(date --iso-8601)"
+        run: echo "date=$(date --iso-8601)" >> $GITHUB_OUTPUT
       - name: Build full ChangeLog
         if: ${{ (steps.dist.outputs.changed == 'true') && (steps.version.outputs.new_tag != '') }}
         run: npx conventional-changelog-cli --release-count=0 --preset=eslint --outfile="${{ runner.temp }}/FullChangeLog.md"
