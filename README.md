@@ -27,7 +27,7 @@ It also pulls the list of release tags from
 [https://go.dev/dl/](https://go.dev/dl/) and exposes the latest
 released Go version as a variable as well.
 
-From the list of released go versions and the minimal version your
+From the list of released Go versions and the minimal version your
 module supports we also build a "matrix" variable to be used as a
 build matrix.
 
@@ -41,7 +41,7 @@ specify the working directory where it is located:
 
 ```yaml
 working-directory:
-  description: Working direcory where you go.mod file is located
+  description: Working directory where you go.mod file is located
   required: false
   default: .
 unsupported:
@@ -62,25 +62,25 @@ patch-level:
 
 ```yaml
 module:
-  description: The go module path (as specified by go.mod)
+  description: The Go module path (as specified by go.mod)
 go-mod-version:
-  description: The go version specified by go.mod
+  description: The Go version specified by go.mod
 minimal:
-  description: The minial go version
+  description: The minimal Go version
 matrix:
-  description: An (stringified) array of go versions from the minimal supported version to the latest released version
+  description: An (stringified) array of Go versions from the minimal supported version to the latest released version
 latest:
-  description: The latest go version
+  description: The latest Go version
 ```
 
 ## Examples
 
-Let's say your `go.mod` specifies go 1.13 as the minimal supported
-version and you want your workflow to setup go version 1.13 using the
+Let's say your `go.mod` specifies Go 1.13 as the minimal supported
+version and you want your workflow to setup Go version 1.13 using the
 [actions/setup-go](https://github.com/actions/setup-go) action:
 
 ```yaml
-name: My go workflow
+name: My Go workflow
 on: pull_request
 
 jobs:
@@ -112,7 +112,7 @@ name: Test
 
 jobs:
   go-versions:
-    name: Lookup go versions
+    name: Lookup Go versions
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.versions.outputs.matrix }}
@@ -134,7 +134,7 @@ jobs:
         with:
           go-version: ${{ matrix.version }}
           check-latest: true
-      - name: go test
+      - name: Go test
         run: go test -v -race -cover -covermode=atomic -coverprofile=coverage.txt ./...
 ```
 
