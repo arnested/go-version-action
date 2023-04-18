@@ -2,56 +2,56 @@
 
 A GitHub action for using the latest released Go version and your
 projects minimal support Go version (from go.mod), and a build matrix
-of them and all versions in between.
+of them, and all versions in between.
 
 ## Motive
 
 Being consistent is hard.
 
-I used to hard code the Go versions my projects needed for test and
+I used to hard-code the Go versions my projects needed for test and
 builds in my GitHub Actions workflow files.
 
-Of course the result was that I used different versions in the
+Of course, the result was that I used different versions in the
 `go.mod` file and my workflow files.
 
-Whenever a new version of Go was released I forgot to add the new
+Whenever a new version of Go was released, I forgot to add the new
 version to my build matrix and my projects weren't tested on the new
 release(s).
 
-So I build this action.
+So, I build this action.
 
 The action reads the minimal supported Go version from your `go.mod`
-file and exposes it as a variable to you workflow.
+file and exposes it as a variable to your workflow.
 
 It also pulls the list of release tags from
 [https://go.dev/dl/](https://go.dev/dl/) and exposes the latest
 released Go version as a variable as well.
 
-From the list of released Go versions and the minimal version your
+From the list of released Go versions and the minimal version, your
 module supports we also build a "matrix" variable to be used as a
 build matrix.
 
-While we are at it we also extract the module path from the `go.mod`
-file even though it hasn't really anything to do with versions ;)
+While we are at it, we also extract the module path from the `go.mod`
+file, even though it hasn't really anything to do with versions ;)
 
 ## Inputs
 
-If your `go mod` file is located in a non standard location you can
+If your `go mod` file is located in a non-standard location, you can
 specify the working directory where it is located:
 
 ```yaml
 working-directory:
-  description: Working directory where you go.mod file is located
+  description: Working directory where your go.mod file is located
   required: false
   default: .
-unsupported:
-  description: Include unsupported versions of Go
-  required: false
-  default: 'true'
 unstable:
   description: Include unstable versions of Go (beta, release candidates)
   required: false
   default: 'false'
+unsupported:
+  description: Include unsupported versions of Go
+  required: false
+  default: 'true'
 patch-level:
   description: Include the patch levels on the versions (default is major.minor)
   required: false
@@ -61,22 +61,22 @@ patch-level:
 ## Outputs
 
 ```yaml
-module:
-  description: The Go module path (as specified by go.mod)
 go-mod-version:
   description: The Go version specified by go.mod
+latest:
+  description: The latest Go version
 minimal:
   description: The minimal Go version
 matrix:
-  description: An (stringified) array of Go versions from the minimal supported version to the latest released version
-latest:
-  description: The latest Go version
+  description: A (stringified) array of Go versions from the minimal supported version to the latest released version
+module:
+  description: The Go module path (as specified by go.mod)
 ```
 
 ## Examples
 
 Let's say your `go.mod` specifies Go 1.13 as the minimal supported
-version and you want your workflow to setup Go version 1.13 using the
+version and you want your workflow to set up Go version 1.13 using the
 [actions/setup-go](https://github.com/actions/setup-go) action:
 
 ```yaml
