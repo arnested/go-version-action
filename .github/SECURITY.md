@@ -6,6 +6,6 @@ All versions published [on the marketplace](https://github.com/marketplace/actio
 
 ## Reporting a Vulnerability
 
-Security issues can be reported to [Arne Jørgensen](https://github.com/arnested)
-either by [mail](mailto:arne@arnested.dk) or any other channel you prefer and
+Security issues can be reported to [Arne Jørgensen](https://github.com/arnested),
+either by [mail](mailto:arne@arnested.dk), [Signal](https://signal.me/#p/+4521650113), or any other channel you prefer and
 trust (see my [Keybase profile](https://keybase.io/arnested)).
