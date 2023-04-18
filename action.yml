@@ -5,32 +5,32 @@ branding:
   color: blue
 inputs:
   working-directory:
-    description: Working direcory
+    description: Working directory where your go.mod file is located
     required: false
     default: .
   unstable:
-    description: With unstable versions
+    description: Include unstable versions of Go (beta, release candidates)
     required: false
     default: 'false'
   unsupported:
-    description: With no longer supported versions
+    description: Include unsupported versions of Go
     required: false
     default: 'true'
   patch-level:
-    description: With patch level of the versions
+    description: Include the patch levels on the versions (default is major.minor)
     required: false
     default: 'false'
 outputs:
   go-mod-version:
-    description: The minial go version (as specified by go.mod)
+    description: The Go version specified by go.mod
   latest:
-    description: The latest go version
+    description: The latest Go version
   minimal:
-    description: The minial go version
+    description: The minimal Go version
   matrix:
-    description: An (stringified) array of go versions from the minimal supported version to the latest released version
+    description: A (stringified) array of Go versions from the minimal supported version to the latest released version
   module:
-    description: The go module path (as specified by go.mod)
+    description: The Go module path (as specified by go.mod)
 runs:
   using: node16
   main: dist/index.js
