@@ -25,7 +25,7 @@
     "semver": "^7.5.4"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.22.10",
+    "@babel/preset-env": "^7.22.20",
     "@vercel/ncc": "^0.36.1",
     "babel-jest": "^29.7.0",
     "eslint": "^8.50.0",
