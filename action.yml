@@ -1,3 +1,4 @@
+---
 name: Go version action
 author: Arne Jørgensen
 description: A GitHub Action providing the latest Go version, your project's minimum Go version, and a build matrix to your workflow
