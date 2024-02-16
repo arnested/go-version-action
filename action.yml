@@ -33,5 +33,5 @@ outputs:
   module:
     description: The Go module path (as specified by go.mod)
 runs:
-  using: node16
+  using: node20
   main: dist/index.js
