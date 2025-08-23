@@ -7,7 +7,7 @@ permissions:
 jobs:
   yamllint:
     name: yaml
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Run yamllint
@@ -17,7 +17,7 @@ jobs:
 
   markdownlint:
     name: markdown
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Run markdownlint
@@ -25,7 +25,7 @@ jobs:
 
   actionlint:
     name: action
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Run actionlint
