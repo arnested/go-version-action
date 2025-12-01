@@ -9,7 +9,7 @@ jobs:
     name: yaml
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Run yamllint
         uses: frenck/action-yamllint@v1.5.0
         with:
@@ -19,7 +19,7 @@ jobs:
     name: markdown
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Run markdownlint
         uses: DavidAnson/markdownlint-cli2-action@v21
 
@@ -27,6 +27,6 @@ jobs:
     name: action
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Run actionlint
         uses: reviewdog/action-actionlint@v1
