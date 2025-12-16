@@ -28,13 +28,13 @@ test('test latest version', () => {
 
 test('test version matrix', () => {
   const t = JSON.parse(fs.readFileSync('__tests__/testdata/dl.json', 'utf8'))
-  const m = matrix('1.16', false, false, t)
+  const m = matrix('1.16', false, false, false, t)
   expect(m).toEqual(['1.16', '1.17', '1.18'])
 })
 
 test('test unstable version matrix', () => {
   const t = JSON.parse(fs.readFileSync('__tests__/testdata/dl.json', 'utf8'))
-  const m = matrix('1.16', true, false, t)
+  const m = matrix('1.16', true, false, false, t)
   expect(m).toEqual([
     '1.16beta1',
     '1.16rc1',
@@ -52,7 +52,7 @@ test('test unstable version matrix', () => {
 
 test('test patch level version matrix', () => {
   const t = JSON.parse(fs.readFileSync('__tests__/testdata/dl.json', 'utf8'))
-  const m = matrix('1.16', false, true, t)
+  const m = matrix('1.16', false, true, false, t)
   expect(m).toEqual([
     '1.16',
     '1.16.1',
@@ -85,7 +85,7 @@ test('test patch level version matrix', () => {
 
 test('test patch level, unstable version matrix', () => {
   const t = JSON.parse(fs.readFileSync('__tests__/testdata/dl.json', 'utf8'))
-  const m = matrix('1.16', true, true, t)
+  const m = matrix('1.16', true, true, false, t)
   expect(m).toEqual([
     '1.16beta1',
     '1.16rc1',
@@ -122,4 +122,17 @@ test('test patch level, unstable version matrix', () => {
     '1.18rc1',
     '1.18'
   ])
+})
+
+test('test patch level with latest patches only', () => {
+  const t = JSON.parse(fs.readFileSync('__tests__/testdata/dl.json', 'utf8'))
+  const m = matrix('1.16', false, true, true, t)
+  expect(m).toEqual(['1.16.15', '1.17.8', '1.18'])
+})
+
+test('test patch level with latest patches only and unstable throws error', () => {
+  const t = JSON.parse(fs.readFileSync('__tests__/testdata/dl.json', 'utf8'))
+  expect(() => {
+    matrix('1.16', true, true, true, t)
+  }).toThrow('The options "unstable" and "latest-patches-only" cannot be used together')
 })

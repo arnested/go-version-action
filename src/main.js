@@ -21,11 +21,18 @@ async function run() {
     const withUnsupported = core.getBooleanInput('unsupported')
     const withUnstable = core.getBooleanInput('unstable')
     const withPatchLevel = core.getBooleanInput('patch-level')
+    const withLatestPatches = core.getBooleanInput('latest-patches-only')
     const content = gomod(`${workingDirectory}/go.mod`)
     const name = modulename(content)
     const goModVersion = getGoModVersion(content)
     const versions = await getVersions(withUnsupported)
-    const mat = matrix(goModVersion, withUnstable, withPatchLevel, versions)
+    const mat = matrix(
+      goModVersion,
+      withUnstable,
+      withPatchLevel,
+      withLatestPatches,
+      versions
+    )
     const lat = latest(mat)
     const min = minimal(mat)
 

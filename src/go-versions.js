@@ -41,10 +41,15 @@ const getVersions = async withUnsupported => {
   return result
 }
 
-const matrix = (min, withUnstable, withPatchLevel, tags) => {
+const matrix = (min, withUnstable, withPatchLevel, withLatestPatches, tags) => {
   const minClean = semverCoerce(min)
   if (minClean === null) {
     throw new Error(`Minimal version isn't quite right: ${min}`)
+  }
+  if (withUnstable && withLatestPatches) {
+    throw new Error(
+      'The options "unstable" and "latest-patches-only" cannot be used together'
+    )
   }
   if (!withUnstable) {
     tags = tags.filter(tag => tag.stable === true)
@@ -62,6 +67,27 @@ const matrix = (min, withUnstable, withPatchLevel, tags) => {
     versions = versions.map(version => {
       const parts = version.split('.')
       return `${parts[0]}.${parts[1]}`
+    })
+  } else if (withLatestPatches) {
+    // Group by major.minor and keep only the latest patch version
+    const grouped = {}
+    versions.forEach(version => {
+      const parts = version.split('.')
+      const majorMinor = `${parts[0]}.${parts[1]}`
+      if (!grouped[majorMinor]) {
+        grouped[majorMinor] = []
+      }
+      grouped[majorMinor].push(version)
+    })
+    versions = Object.values(grouped).map(group => {
+      return group.reduce((acc, val) => {
+        const a = semverCoerce(acc)
+        const v = semverCoerce(val)
+        if (v !== null && a !== null && semverGte(v, a)) {
+          return val
+        }
+        return acc
+      })
     })
   }
   versions = [...new Set(versions)]
