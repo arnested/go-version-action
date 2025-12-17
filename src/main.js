@@ -1,12 +1,12 @@
 import * as core from '@actions/core'
 import {
+  getGoModVersion,
   getVersions,
   gomod,
   latest,
   matrix,
   minimal,
-  modulename,
-  getGoModVersion
+  modulename
 } from './go-versions.js'
 
 async function run() {
@@ -22,6 +22,7 @@ async function run() {
     const withUnstable = core.getBooleanInput('unstable')
     const withPatchLevel = core.getBooleanInput('patch-level')
     const withLatestPatches = core.getBooleanInput('latest-patches-only')
+    const withStrictSemver = core.getBooleanInput('strict-semver')
     const content = gomod(`${workingDirectory}/go.mod`)
     const name = modulename(content)
     const goModVersion = getGoModVersion(content)
@@ -31,6 +32,7 @@ async function run() {
       withUnstable,
       withPatchLevel,
       withLatestPatches,
+      withStrictSemver,
       versions
     )
     const lat = latest(mat)
