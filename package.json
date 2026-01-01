@@ -19,6 +19,9 @@
   ],
   "author": "Arne Jørgensen",
   "license": "MIT",
+  "engines": {
+    "node": ">=24"
+  },
   "dependencies": {
     "@actions/core": "^2.0.1",
     "node-fetch": "~2.7.0",
