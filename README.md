@@ -88,7 +88,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: arnested/go-version-action@v1
+      - uses: arnested/go-version-action@v2
         id: go-version
       - name: Install Go ${{ steps.go-version.outputs.minimal }}
         uses: actions/setup-go@v3
@@ -118,7 +118,7 @@ jobs:
       matrix: ${{ steps.versions.outputs.matrix }}
     steps:
       - uses: actions/checkout@v3
-      - uses: arnested/go-version-action@v1
+      - uses: arnested/go-version-action@v2
         id: versions
   test:
     name: Test
