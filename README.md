@@ -60,6 +60,10 @@ latest-patches-only:
   description: When patch-level is true, only include the latest patch version of each major.minor version in the matrix. Does nothing if patch-level is false. Cannot be used with unstable.
   required: false
   default: 'false'
+strict-semver:
+  default: Use strict semver version. E.g. `1.16` -> `1.16.0` and `1.18beta2` -> `1.18.0-beta.2`.
+  required: false
+  default: 'false'
 ```
 
 ## Outputs

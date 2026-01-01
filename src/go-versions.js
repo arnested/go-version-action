@@ -41,7 +41,14 @@ const getVersions = async withUnsupported => {
   return result
 }
 
-const matrix = (min, withUnstable, withPatchLevel, withLatestPatches, tags) => {
+const matrix = (
+  min,
+  withUnstable,
+  withPatchLevel,
+  withLatestPatches,
+  withStrictSemver,
+  tags
+) => {
   const minClean = semverCoerce(min)
   if (minClean === null) {
     throw new Error(`Minimal version isn't quite right: ${min}`)
@@ -63,6 +70,17 @@ const matrix = (min, withUnstable, withPatchLevel, withLatestPatches, tags) => {
     const v2 = semverCoerce(v)
     return v2 !== null && semverGte(v2, minClean)
   })
+  if (withStrictSemver) {
+    versions = versions.map(version => {
+      // Alpha and beta versions on https://go.dev/dl are named like
+      // `1.18beta2`. We rewrite into strict semver syntax:
+      // `1.18.0-beta.2`.
+      version = version.replace(/([^0-9\\.]+)/, '-$1.')
+      return semverCoerce(version, {
+        includePrerelease: true
+      }).version
+    })
+  }
   if (!withPatchLevel) {
     versions = versions.map(version => {
       const parts = version.split('.')
@@ -117,11 +135,11 @@ const minimal = versions => {
 }
 
 export {
+  getGoModVersion,
+  getVersions,
   gomod,
   latest,
   matrix,
   minimal,
-  modulename,
-  getGoModVersion,
-  getVersions
+  modulename
 }
