@@ -56,6 +56,10 @@ patch-level:
   description: Include the patch levels on the versions (default is major.minor)
   required: false
   default: 'false'
+latest-patches-only:
+  description: When patch-level is true, only include the latest patch version of each major.minor version in the matrix. Does nothing if patch-level is false. Cannot be used with unstable.
+  required: false
+  default: 'false'
 ```
 
 ## Outputs
