@@ -39,9 +39,9 @@ jobs:
       - run: |
           test '${{ steps.go-version-1.outputs.minimal }}' == '1.16'
       - run: |
-          test '${{ steps.go-version-1.outputs.latest }}' == '1.25'
+          test '${{ steps.go-version-1.outputs.latest }}' == '1.26'
       - run: |
-          test '${{ steps.go-version-1.outputs.matrix }}' == '["1.16","1.17","1.18","1.19","1.20","1.21","1.22","1.23","1.24","1.25"]'
+          test '${{ steps.go-version-1.outputs.matrix }}' == '["1.16","1.17","1.18","1.19","1.20","1.21","1.22","1.23","1.24","1.25","1.26"]'
       - uses: ./
         id: go-version-2
         with:
@@ -52,11 +52,11 @@ jobs:
       - run: |
           test '${{ steps.go-version-2.outputs.go-mod-version }}' == '1.16'
       - run: |
-          test '${{ steps.go-version-2.outputs.minimal }}' == '1.24'
+          test '${{ steps.go-version-2.outputs.minimal }}' == '1.25'
       - run: |
-          test '${{ steps.go-version-2.outputs.latest }}' == '1.25'
+          test '${{ steps.go-version-2.outputs.latest }}' == '1.26'
       - run: |
-          test '${{ steps.go-version-2.outputs.matrix }}' == '["1.24","1.25"]'
+          test '${{ steps.go-version-2.outputs.matrix }}' == '["1.25","1.26"]'
       - uses: ./
         id: go-version-3
         with:
@@ -68,8 +68,8 @@ jobs:
       - run: |
           test '${{ steps.go-version-3.outputs.go-mod-version }}' == '1.16'
       - run: |
-          test '${{ steps.go-version-3.outputs.minimal }}' == '1.24.13'
+          test '${{ steps.go-version-3.outputs.minimal }}' == '1.25.7'
       - run: |
-          test '${{ steps.go-version-3.outputs.latest }}' == '1.25.7'
+          test '${{ steps.go-version-3.outputs.latest }}' == '1.26.0'
       - run: |
-          test '${{ steps.go-version-3.outputs.matrix }}' == '["1.24.13","1.25.7"]'
+          test '${{ steps.go-version-3.outputs.matrix }}' == '["1.25.7","1.26.0"]'
