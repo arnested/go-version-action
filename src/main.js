@@ -1,3 +1,4 @@
+import path from 'path'
 import * as core from '@actions/core'
 import {
   getGoModVersion,
@@ -23,7 +24,15 @@ async function run() {
     const withPatchLevel = core.getBooleanInput('patch-level')
     const withLatestPatches = core.getBooleanInput('latest-patches-only')
     const withStrictSemver = core.getBooleanInput('strict-semver')
-    const content = gomod(`${workingDirectory}/go.mod`)
+    const workspace = path.resolve(process.env.GITHUB_WORKSPACE || process.cwd())
+    const resolvedDirectory = path.resolve(workspace, workingDirectory)
+    if (
+      resolvedDirectory !== workspace &&
+      !resolvedDirectory.startsWith(workspace + path.sep)
+    ) {
+      throw new Error('working-directory must resolve to a path inside the workspace')
+    }
+    const content = gomod(path.join(resolvedDirectory, 'go.mod'))
     const name = modulename(content)
     const goModVersion = getGoModVersion(content)
     const versions = await getVersions(withUnsupported)
