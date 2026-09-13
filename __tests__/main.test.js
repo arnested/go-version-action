@@ -179,3 +179,54 @@ test('test patch level with latest patches only and unstable throws error', () =
     'The options "unstable" and "latest-patches-only" cannot be used together'
   )
 })
+
+import path from 'path'
+import os from 'os'
+import {validateWorkingDirectory} from '../src/main.js'
+
+describe('validateWorkingDirectory', () => {
+  test('rejects path traversal via ../..', () => {
+    expect(() => {
+      validateWorkingDirectory('../..', '/tmp/workspace')
+    }).toThrow(
+      'working-directory must resolve to a path inside the workspace'
+    )
+  })
+
+  test('rejects absolute path outside workspace', () => {
+    expect(() => {
+      validateWorkingDirectory('/etc', '/tmp/workspace')
+    }).toThrow(
+      'working-directory must resolve to a path inside the workspace'
+    )
+  })
+
+  test('accepts empty working-directory (workspace root)', () => {
+    expect(() => {
+      validateWorkingDirectory('', '/tmp/workspace')
+    }).not.toThrow()
+  })
+
+  test('accepts valid subdirectory inside workspace', () => {
+    expect(() => {
+      validateWorkingDirectory('subdir', '/tmp/workspace')
+    }).not.toThrow()
+  })
+
+  test('rejects symlink inside workspace pointing outside', () => {
+    const workspace = fs.mkdtempSync(path.join(os.tmpdir(), 'ws-'))
+    const outside = fs.mkdtempSync(path.join(os.tmpdir(), 'outside-'))
+    const symlinkInWorkspace = path.join(workspace, 'escape')
+    fs.symlinkSync(outside, symlinkInWorkspace)
+    try {
+      expect(() => {
+        validateWorkingDirectory('escape', workspace)
+      }).toThrow(
+        'working-directory must resolve to a path inside the workspace'
+      )
+    } finally {
+      fs.rmSync(workspace, {recursive: true, force: true})
+      fs.rmSync(outside, {recursive: true, force: true})
+    }
+  })
+})
