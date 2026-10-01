@@ -33,7 +33,7 @@
     "@eslint/eslintrc": "^3.3.6",
     "@eslint/js": "^10.0.1",
     "@vercel/ncc": "^0.45.0",
-    "babel-jest": "^30.5.0",
+    "babel-jest": "^30.5.2",
     "eslint": "^10.11.0",
     "eslint-plugin-jest": "^29.16.5",
     "globals": "^17.11.0",
