@@ -1,3 +1,5 @@
+import path from 'path'
+import fs from 'fs'
 import * as core from '@actions/core'
 import {
   getGoModVersion,
@@ -8,6 +10,37 @@ import {
   minimal,
   modulename
 } from './go-versions.js'
+
+export function validateWorkingDirectory(workingDirectory, workspace) {
+  const resolvedDirectory = path.resolve(workspace, workingDirectory)
+  if (
+    resolvedDirectory !== workspace &&
+    !resolvedDirectory.startsWith(workspace + path.sep)
+  ) {
+    throw new Error(
+      'working-directory must resolve to a path inside the workspace'
+    )
+  }
+  // Resolve symlinks to prevent symlink-based workspace escapes
+  try {
+    const realDirectory = fs.realpathSync(resolvedDirectory)
+    const realWorkspace = fs.realpathSync(workspace)
+    if (
+      realDirectory !== realWorkspace &&
+      !realDirectory.startsWith(realWorkspace + path.sep)
+    ) {
+      throw new Error(
+        'working-directory must resolve to a path inside the workspace'
+      )
+    }
+  } catch (e) {
+    if (e.code !== 'ENOENT') {
+      throw e
+    }
+    // Directory does not exist yet; the downstream file read will handle it
+  }
+  return resolvedDirectory
+}
 
 async function run() {
   try {
@@ -23,7 +56,9 @@ async function run() {
     const withPatchLevel = core.getBooleanInput('patch-level')
     const withLatestPatches = core.getBooleanInput('latest-patches-only')
     const withStrictSemver = core.getBooleanInput('strict-semver')
-    const content = gomod(`${workingDirectory}/go.mod`)
+    const workspace = path.resolve(process.env.GITHUB_WORKSPACE || process.cwd())
+    const resolvedDirectory = validateWorkingDirectory(workingDirectory, workspace)
+    const content = gomod(path.join(resolvedDirectory, 'go.mod'))
     const name = modulename(content)
     const goModVersion = getGoModVersion(content)
     const versions = await getVersions(withUnsupported)
@@ -74,4 +109,7 @@ async function run() {
   }
 }
 
-run()
+/* istanbul ignore next */
+if (process.env.NODE_ENV !== 'test') {
+  run()
+}
